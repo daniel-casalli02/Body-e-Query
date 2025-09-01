@@ -127,6 +127,30 @@ app.get('/animais', (req, res) => {
   });
 });
 
+app.post('/varinhas', (req, res) =>{
+  const{ material, nucleo, comprimento } = req.body;
+  if(!material || !nucleo || !comprimento){
+      return res.status(400).json({
+          sucess: false,
+          massage:"Material, nucleo e comprimento são obrigatorios para a criação da varinha!"
+      });
+  }
+
+  const novaVarinha = {
+    id: varinhas.length + 1,
+    material: material,
+    nucleo: nucleo,
+    comprimento: comprimento,
+  }
+
+  varinhas.push(novaVarinha)
+  res.status(201).json({
+      success: true,
+      message: "Nova varinha adicionada ao sistema de Hogwarts!",
+      data: novaVarinha});
+});
+
+
 // Iniciar servidor escutando na porta definida
 app.listen(serverPort, () => {
     console.log(`🚀 Servidor rodando em http://localhost:${serverPort} 🚀`);
