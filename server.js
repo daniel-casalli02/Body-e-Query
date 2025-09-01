@@ -3,7 +3,7 @@ import express from "express";
 import dotenv from "dotenv";
 
 import dados from "./src/data/dados.js"
-const {bruxos} = dados;
+const {bruxos, varinhas, pocoes, animais} = dados;
 // Criar aplicação com Express e configurar para aceitar JSON
 const app = express();
 app.use(express.json());
@@ -71,6 +71,60 @@ app.post('/bruxos', (req, res) =>{
         success: true,
         message: "Novo bruxo adicionado a Hogwarts!",
         data: novoBruxo});
+});
+
+app.get('/varinhas', (req, res) => {
+  const { material, nucleo, comprimento } = req.query;
+  let varinh = varinhas;
+
+  if (material) {
+    varinh = varinh.filter(v => v.material.toLowerCase() === material.toLowerCase());
+  }
+
+  if (nucleo) {
+    varinh = varinh.filter(v => v.nucleo == nucleo);
+  }
+  
+  res.status(200).json({
+    total: varinh.length,
+    data: varinh
+  });
+});
+
+app.get('/pocoes', (req, res) => {
+  const { nome, efeito } = req.query;
+  let poco = pocoes;
+
+  if (nome) {
+    poco = poco.filter(p => p.nome.toLowerCase() === nome.toLowerCase());
+  }
+
+  if (efeito) {
+    poco = poco.filter(p => p.efeito == efeito);
+  }
+
+  res.status(200).json({
+    total: poco.length,
+    data: poco
+  });
+});
+
+app.get('/animais', (req, res) => {
+  const { nome, tipo } = req.query;
+  let anima = animais;
+
+  if (nome) {
+    anima = anima.filter(a => a.nome.toLowerCase() === nome.toLowerCase());
+  }
+
+  if (tipo) {
+    anima = anima.filter(a => a.tipo == tipo);
+  }
+
+  res.status(200).json({
+    total: anima.length,
+    data: anima
+  });
 });
 
 // Iniciar servidor escutando na porta definida
